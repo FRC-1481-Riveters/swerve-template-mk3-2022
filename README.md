@@ -31,3 +31,10 @@ our encoder values displayed to the dashboard.
 5. Re-deploy and try to drive the robot forwards. All wheels should stay parallel to each other.
 6. Make sure all the wheels are spinning in the correct direction. If not, add 180 degrees to the offset of each wheel 
 that is spinning in the incorrect direction. (I.e. `-Math.toRadians(<angle> + 180.0))`)
+
+Note found on ChiefDelphi:
+A heads up for other teams - change your CANCoder settings, we spent about 2 hours working out code errors when it turns out you just need to use PhoenixTuner config tab to do the following:
+
+Change the direction from “false” to “true”
+> Change the bootup behavior from booting to zero to booting to absolute value
+> Otherwise, just make sure to set your offsets to 0 before your measure - I didn’t read the readme thoroughly enough and spent 20 minutes fumbling with measurements with offsets already set.
