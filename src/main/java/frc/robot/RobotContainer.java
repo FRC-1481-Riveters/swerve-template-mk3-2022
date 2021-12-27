@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.AutonMacroPlayback;
+import frc.robot.commands.AutonMacroRecord;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +27,9 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
   private final XboxController m_controller = new XboxController(0);
+
+  private final Command AutonPlayback =
+  new AutonMacroPlayback( "/home/lvuser/autonpath.csv", m_drivetrainSubsystem );
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -66,7 +71,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return AutonPlayback;
   }
 
   private static double deadband(double value, double deadband) {
