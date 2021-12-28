@@ -5,6 +5,7 @@ package frc.robot;
 import java.io.FileWriter;
 import java.io.IOException;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import java.lang.String;
 
 /*
 *This macro records all the movements you make in teleop and saves them to the file you specify.
@@ -45,6 +46,10 @@ public class MacroRecorder {
 
 	public void record() throws IOException
 	{
+		double convert_voltage;
+		
+		convert_voltage = m_drivetrain.MAX_VOLTAGE * m_drivetrain.MAX_VELOCITY_METERS_PER_SECOND;
+
 		if(writer != null)
 		{
 			//start each "frame" with the elapsed time since we started recording
@@ -55,13 +60,13 @@ public class MacroRecorder {
 			
 			//drive motors
 			writer.append( 
-				"," + m_drivetrain.m_frontLeftModule.getDriveVelocity() +
+				"," + safe_write( m_drivetrain.m_frontLeftModule.getDriveVelocity(), convert_voltage ) +
 				"," + m_drivetrain.m_frontLeftModule.getSteerAngle() +
-				"," + m_drivetrain.m_frontRightModule.getDriveVelocity() +
+				"," + safe_write(  m_drivetrain.m_frontRightModule.getDriveVelocity(), convert_voltage ) +
 				"," + m_drivetrain.m_frontRightModule.getSteerAngle() +
-				"," + m_drivetrain.m_backLeftModule.getDriveVelocity() +
+				"," + safe_write(  m_drivetrain.m_backLeftModule.getDriveVelocity(), convert_voltage ) +
 				"," + m_drivetrain.m_backLeftModule.getSteerAngle() +
-				"," + m_drivetrain.m_backRightModule.getDriveVelocity() +
+				"," + safe_write(  m_drivetrain.m_backRightModule.getDriveVelocity(), convert_voltage ) +
 				"," + m_drivetrain.m_backRightModule.getSteerAngle()
 			);
 			
@@ -83,5 +88,14 @@ public class MacroRecorder {
 			writer.flush();
 			writer.close();
 		}
+	}
+
+	private String safe_write( double velocity, double convert_voltage )
+	{
+		String s;
+
+		s = String.valueOf( velocity / convert_voltage );
+
+		return s;
 	}
 }

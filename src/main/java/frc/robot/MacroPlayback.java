@@ -96,7 +96,7 @@ public class MacroPlayback {
 
             if( current_time <= elapsed_time)
             {
-                m_drivetrain.m_frontLeftModule.set( current_front_left_drive, current_front_left_angle );
+                m_drivetrain.m_frontLeftModule.set( current_front_left_angle, current_front_left_drive );
                 m_drivetrain.m_frontRightModule.set( current_front_right_drive, current_front_right_angle );
                 m_drivetrain.m_backLeftModule.set( current_back_left_drive, current_back_left_angle );
                 m_drivetrain.m_backRightModule.set( current_back_right_drive, current_back_right_angle );
