@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.AutonMacroPlayback;
 import frc.robot.commands.AutonMacroRecord;
 
@@ -25,8 +26,12 @@ import frc.robot.commands.AutonMacroRecord;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
 
   private final XboxController m_controller = new XboxController(0);
+  private final XboxController m_operatorController = new XboxController(1);
+
+  private double joystickDivider = 1.5;
 
   private final Command AutonPlayback =
   new AutonMacroPlayback( "/home/lvuser/autonpath.csv", m_drivetrainSubsystem );
@@ -42,9 +47,9 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getY(GenericHID.Hand.kLeft)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getX(GenericHID.Hand.kLeft)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller.getX(GenericHID.Hand.kRight)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(m_controller.getY(GenericHID.Hand.kLeft) / joystickDivider) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getX(GenericHID.Hand.kLeft) / joystickDivider) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller.getX(GenericHID.Hand.kRight) / joystickDivider) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     // Configure the button bindings
@@ -66,6 +71,19 @@ public class RobotContainer {
     new Button(m_controller::getStartButton)
             .whenPressed( new AutonMacroRecord( "/home/lvuser/autonpath.csv", m_drivetrainSubsystem) );
 
+  }
+
+  public void checkBumper()
+  {
+    if(m_controller.getBumper(GenericHID.Hand.kRight)){
+      joystickDivider = 1.0;
+    }else{
+      joystickDivider = 1.5;
+    }
+  }
+
+  public void controlIntake(){
+    m_intakeSubsystem.setIntakeSpeed(m_operatorController.getY(GenericHID.Hand.kRight) / 1.4);
   }
 
   /**
@@ -92,7 +110,7 @@ public class RobotContainer {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.05);
+    value = deadband(value, 0.1);
 
     // Square the axis
     value = Math.copySign(value * value, value);
