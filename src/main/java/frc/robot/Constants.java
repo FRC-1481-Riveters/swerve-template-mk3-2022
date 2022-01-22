@@ -47,4 +47,12 @@ public final class Constants {
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(184.74); // FIXME Measure and set back right steer offset
 
     public static final int INTAKE_MOTOR = 8;
+
+    public static final int CLIMB_6_MOTOR = 30;
+    public static final int CLIMB_10_MOTOR = 31;
+    public static final int CLIMB_15_MOTOR = 32;
+
+    public static final int CLIMB_6_ENCODER = 33;
+    public static final int CLIMB_10_ENCODER = 34;
+    public static final int CLIMB_15_ENCODER = 35;
 }

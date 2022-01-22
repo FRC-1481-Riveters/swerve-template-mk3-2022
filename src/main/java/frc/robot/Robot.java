@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_robotContainer.checkBumper();
     m_robotContainer.controlIntake();
+    m_robotContainer.controlClimb();
   }
 
   @Override

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.commands.AutonMacroPlayback;
 import frc.robot.commands.AutonMacroRecord;
 
@@ -27,6 +28,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
 
   private final XboxController m_controller = new XboxController(0);
   private final XboxController m_operatorController = new XboxController(1);
@@ -86,6 +88,49 @@ public class RobotContainer {
     m_intakeSubsystem.setIntakeSpeed(m_operatorController.getY(GenericHID.Hand.kRight) / 1.4);
   }
 
+  public void controlClimb(){
+    double climb6Speed;
+    double climb10Speed;
+    double climb15Speed;
+
+    if(m_operatorController.getBumper(GenericHID.Hand.kLeft)==true){
+      climb6Speed=0.3;
+    }
+    else if(m_operatorController.getTriggerAxis(GenericHID.Hand.kLeft)>=0.5){
+      climb6Speed=-0.3;
+    }
+    else{
+      climb6Speed=0;
+    }
+
+
+    if(m_operatorController.getBumper(GenericHID.Hand.kRight)==true){
+      climb10Speed=0.3;
+    }
+    else if(m_operatorController.getTriggerAxis(GenericHID.Hand.kRight)>=0.5){
+      climb10Speed=-0.3;
+    }
+    else{
+      climb10Speed=0;
+    }
+
+
+    if(m_operatorController.getYButton()){
+      climb15Speed=0.3;
+    }
+    else if(m_operatorController.getAButton()){
+      climb15Speed=-0.3;
+    }
+    else{
+      climb15Speed=0;
+    }
+    m_climbSubsystem.setClimb6Speed(climb6Speed);
+    m_climbSubsystem.setClimb10Speed(climb10Speed);
+    m_climbSubsystem.setClimb15Speed(climb15Speed);
+  }
+
+
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
