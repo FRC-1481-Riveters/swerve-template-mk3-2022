@@ -85,6 +85,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.checkBumper();
     m_robotContainer.controlIntake();
     m_robotContainer.controlClimb();
+    m_robotContainer.shooterYeet();
+    m_robotContainer.kickerPunt();
   }
 
   @Override

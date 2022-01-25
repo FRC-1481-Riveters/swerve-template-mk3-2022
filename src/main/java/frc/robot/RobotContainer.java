@@ -15,6 +15,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.AutonMacroPlayback;
 import frc.robot.commands.AutonMacroRecord;
 
@@ -29,6 +30,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem();
+  private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
 
   private final XboxController m_controller = new XboxController(0);
   private final XboxController m_operatorController = new XboxController(1);
@@ -114,7 +116,6 @@ public class RobotContainer {
       climb10Speed=0;
     }
 
-
     if(m_operatorController.getYButton()){
       climb15Speed=0.3;
     }
@@ -129,8 +130,26 @@ public class RobotContainer {
     m_climbSubsystem.setClimb15Speed(climb15Speed);
   }
 
+public void shooterYeet(){
+  /*High A goal*/
+  if(m_controller.getYButton()){
+    m_shooterSubsystem.setYeetSpeed(0.6);
+  }/*Low A goal*/
+  else if(m_controller.getXButton()){
+    m_shooterSubsystem.setYeetSpeed(0.2);
+  }/*B goal*/
+  else if(m_controller.getBButton()){
+    m_shooterSubsystem.setYeetSpeed(0.8);
+  }/*C goal*/
+  else if(m_controller.getAButton()){
+    m_shooterSubsystem.setYeetSpeed(1.0);
+  }
+}
 
-  
+public void kickerPunt(){
+  m_shooterSubsystem.setKickerSpeed(m_operatorController.getY(GenericHID.Hand.kLeft));
+}
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
